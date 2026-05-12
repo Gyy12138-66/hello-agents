@@ -18,10 +18,13 @@ class ReportAgent(BaseAgent):
         risk_assessment = input_data.get("risk_assessment", {})
         advice = input_data.get("advice") or {}
         confidence = risk_assessment.get("confidence", 0.5)
+        retrieved_memory = str(input_data.get("retrieved_memory") or "（暂无召回记忆）")
 
         advice_list = advice.get("advice", [])
 
-        prompt = self._build_prompt(indicators, risk_assessment, advice_list, confidence)
+        prompt = self._build_prompt(
+            indicators, risk_assessment, advice_list, confidence, retrieved_memory
+        )
         response = await self.think(prompt)
 
         try:
@@ -58,7 +61,8 @@ class ReportAgent(BaseAgent):
     indicators: List[Dict[str, Any]],
     risk_assessment: Dict[str, Any],
     advice_list: List[Dict[str, Any]],
-    confidence: float
+    confidence: float,
+    retrieved_memory: str,
 ) -> str:
 
         return f"""
@@ -76,6 +80,9 @@ class ReportAgent(BaseAgent):
 
 整体置信度：
 {confidence}
+
+历史记忆召回（RAG）：
+{retrieved_memory}
 
 要求：
 - 不新增分析结论

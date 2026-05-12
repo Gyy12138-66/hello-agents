@@ -1,105 +1,184 @@
-# 健康档案助手-HealthRecordAgent
+# HealthRecordAgent · 健康档案助手
 
-> 基于 HelloAgents 框架的多智能体健康档案助手
-> 支持体检报告、健康档案（文本、PDF）结构化解析、指标解读和健康建议生成
+基于 **HelloAgents**（`HelloAgentsLLM`）与 **FastAPI** 的多智能体应用：体检报告解读、饮食推荐与执行反馈闭环，可选 **Milvus 语义检索 + SQLite** 长期记忆。
 
-## 📝 项目简介
+> **声明**：本项目输出仅供健康信息与流程演示，**不能替代**执业医师的诊断或处方。
 
-在现实场景中，体检报告通常以 PDF 或表格形式给出，包含大量医学指标，但：
-- 指标含义不清晰
-- 正常 / 异常范围难以判断
-- 缺乏整体健康解读和可执行建议
+---
 
-本项目通过 **多智能体协作（Multi-Agent）** 的方式，对体检报告进行：
-- 结构化解析
-- 指标语义解释
-- 风险初步评估
-- 个性化健康建议生成
+## 界面概览
 
-适用于：
-- 个人健康管理
-- 健康数据理解与科普
-- 多智能体应用 / Agent 系统毕业设计示例
+截图位于 **`frontend/screenshots/`**，更新时替换同名文件即可。
 
-## ✨ 核心功能
+**档案与报告**（`report.png`）
 
-- [x] **体检报告解析**
-  - 支持 PDF / 文本形式的体检报告输入
-  - 自动抽取关键健康指标（如血常规、生化指标等）
-- [x] **健康指标解读**
-  - 给出指标含义、参考范围与异常提示
-  - 使用自然语言进行“非医学术语”的解释
-- [x] **多智能体协作分析**
-  - 不同 Agent 分工完成解析、判断与建议生成
-  - 提高分析的结构性与可解释性
-- [ ] **健康档案长期管理（规划中）**
-  - 多次体检记录对比
-  - 趋势分析与健康变化追踪
+![档案与报告](frontend/screenshots/report.png)
 
-## 🛠️ 技术栈
+**饮食推荐**（`diet.png`）
 
-- HelloAgents框架
-- 使用的智能体范式（如ReAct、Plan-and-Solve等）
-    Plan-and-Solve + ReAct（混合）
-    由一个 Planner 规划健康分析流程，多个 Specialist Agent 按步骤协作完成健康档案解读   
-- **后端框架**: FastAPI + Uvicorn
-- **异步处理**: asyncio
-- **PDF 解析**: pdfplumber
+![饮食推荐](frontend/screenshots/diet.png)
 
-智能体协作方式：
-- PlannerAgent 负责整体分析流程规划  
-- HealthIndicatorAgent 解析指标并解读  
-- RiskAssessmentAgent 进行风险评估  
-- AdviceAgent 生成个性化健康建议  
-- ReportAgent 汇总输出最终报告 
+**执行反馈 Reflect**（`reflect.png`）
 
-## 🚀 快速开始
+![执行反馈 Reflect](frontend/screenshots/reflect.png)
 
-### 环境要求
+---
 
-- Python 3.10+
-- 其他要求
+## 功能概览
 
-### 安装依赖
+| 模块 | 说明 |
+|------|------|
+| **档案分析** | 文本或 PDF 体检报告 → 多 Agent 流水线（规划 → 指标 → 风险 → 建议 → 报告），异步任务可轮询状态 |
+| **饮食助手** | 自然语言 **今日饮食日志** → LLM 解析与营养汇总 → 营养师 / 教练 / 习惯 多阶段结构化输出；结合历史记忆与 Reflect 反馈 |
+| **长期记忆** | SQLite 存运行记录与反馈；可选 Milvus 向量索引 + Hybrid 检索（失败回退 SQL 列表） |
+| **可观测** | `pipeline_trace`、`errors` / `degraded`、`rag_debug`；报告/饮食 run 的 observability 接口与饮食 **replay** |
+| **前端** | 静态页 + Tab（档案分析 \| 饮食助手 \| 历史）；类 Apple Health 信息层级；**开发者模式**控制技术细节展示；饮食 **Reflect** 反馈闭环 |
 
+---
+
+## 架构要点
+
+- **编排**：健康分析为 **Plan-and-Execute** 风格（`PlannerAgent` 后多 Specialist 串行）；饮食为 **多阶段流水线**（食物解析 → 营养师 → 教练 → 习惯），各阶段 **Pydantic** 校验与失败降级。
+- **工具**：饮食场景内 **Tool Use**（如营养查询、活动/睡眠摘要 Mock，可替换真实数据源）。
+- **LLM**：通过 `hello_agents.HelloAgentsLLM` 调用兼容 OpenAI 的 API；Agent 基类与业务流水线在本仓库 `backend/agents`、`backend/service` 中实现。
+- **记忆与 RAG**：历史报告、饮食与反馈等落在 **SQLite**；需要语义召回时，对记忆做 **向量索引（Milvus）**，按用户与场景检索相关片段并注入 Agent。Milvus 未开或不可用时 **自动回退** 为基于 SQL 的近期记忆列表。
+
+---
+
+## 目录结构（节选）
+
+```
+HealthRecordAgent/
+├── README.md
+├── requirements.txt
+├── data/                    # 默认 SQLite：health_memory.db（可 .gitignore）
+├── backend/
+│   ├── api/main.py          # FastAPI 入口
+│   ├── agents/              # 报告分析各 Agent
+│   ├── service/             # health_analysis、diet_pipeline 等
+│   ├── memory/              # SQLite 存取
+│   ├── rag/                 # 嵌入、Milvus、统一 retrieve
+│   └── tools/               # 饮食相关工具
+└── frontend/
+    ├── index.html, app.js, style.css
+    └── screenshots/         # README 界面截图（见「界面概览」）
+```
+
+---
+
+## 环境要求
+
+- **Python**：3.10+（建议使用虚拟环境）
+- **可选**：本地 **Milvus**（Docker）与可用的 **Embedding** 接口，用于开启 RAG
+
+---
+
+## 快速开始
+
+### 1. 安装依赖
+
+进入 **本 README 所在目录**（即 `HealthRecordAgent` 项目根目录）：
+
+```bash
+python3 -m venv backend/.venv
+source backend/.venv/bin/activate   # Windows: backend\.venv\Scripts\activate
 pip install -r requirements.txt
+```
 
-### 配置API密钥
+### 2. 配置环境变量
 
-# 创建.env文件
+在 **`backend/`** 下创建 `.env`（`python-dotenv` 随进程工作目录加载；**请在 `backend` 目录下启动 Uvicorn**，以便正确读取 `backend/.env`）：
+
+```bash
+cd backend
 cp .env.example .env
+# 编辑 .env：至少配置 OPENAI_API_KEY；使用兼容网关时需配置 OPENAI_BASE_URL
+```
 
-# 编辑.env文件，填入你的API密钥
+主要变量说明见 **`backend/.env.example`**。开启语义记忆检索时设置 `RAG_ENABLED=true`，并保证 `MILVUS_URI` 与嵌入相关变量可用。
 
+### 3. 启动后端
 
-### 运行项目
+```bash
+cd backend
+source .venv/bin/activate   # 若尚未激活虚拟环境
+python -m uvicorn api.main:app --host 127.0.0.1 --port 8000 --reload
+```
 
-uvicorn backend.api.routes.main:app --reload
+- Swagger：**http://127.0.0.1:8000/docs**
+- 路由前缀：**`/api`**（例如 `POST /api/health/analysis`）
 
-服务启动后，可通过浏览器或前端调用 API 接口：
-	•	文本报告分析: POST /api/health/analysis
-	•	PDF 报告分析: POST /api/health/analysis/pdf
-	•	任务状态查询: GET /api/health/task_status/{task_id}
+### 4. 启动前端（静态服务）
 
-## 🎯 项目亮点
-	•	多智能体分工协作，结构化解析体检报告
-	•	支持文本与 PDF 输入，自动抽取健康指标
-	•	可扩展健康档案管理与趋势分析
-	•	异步任务处理，前端实时显示 Agent 执行状态
+另开终端：
 
-## 📖 使用示例
+```bash
+cd frontend
+python3 -m http.server 8080 --bind 127.0.0.1
+```
 
-![报告分析](frontend/screenshots/example.png)
+浏览器打开：**http://127.0.0.1:8080/**  
 
-## 🤝 贡献指南
+前端默认请求 **`http://127.0.0.1:8000`**（见 `frontend/app.js` 中 `API_BASE`），请与后端端口一致。
 
-欢迎提出Issue和Pull Request！
+---
 
-## 👤 作者
+## API 一览
 
-- GitHub: [@Shawnxyxy](https://github.com/Shawnxyxy)
-- Email: 852679909@qq.com
+### 健康分析
 
-## 🙏 致谢
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| POST | `/api/health/analysis` | 文本报告分析，返回 `task_id` |
+| POST | `/api/health/analysis/pdf` | 上传 PDF 分析 |
+| GET | `/api/health/task_status/{task_id}` | 任务与 Agent 状态 |
+| GET | `/api/health/users/{user_id}/report_history` | 用户历史报告 |
+| GET | `/api/health/report_runs/{task_id}` | 单次运行详情 |
+| GET | `/api/health/report_runs/{task_id}/observability` | 可观测性摘要 |
 
-感谢Datawhale社区和Hello-Agents项目！
+### 饮食
+
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| POST | `/api/diet/recommend` | 饮食推荐（`context.today_food_log_text` 等） |
+| POST | `/api/diet/reflect` | 是否按推荐执行及原因（闭环记忆） |
+| GET | `/api/diet/users/{user_id}/runs` | 饮食运行历史 |
+| GET | `/api/diet/users/{user_id}/reflect_history` | 反馈历史 |
+| GET | `/api/diet/runs/{run_id}` | 单次饮食 run |
+| GET | `/api/diet/runs/{run_id}/observability` | 可观测性视图 |
+| POST | `/api/diet/runs/{run_id}/replay` | 同输入重跑（新 `run_id`） |
+
+---
+
+## Milvus（可选）
+
+1. 使用官方 Docker Compose 或单机镜像拉起 Milvus，保证 **`19530`** 可访问（与 `MILVUS_URI` 一致）。
+2. 设置 `RAG_ENABLED=true`，并配置与 LLM 网关一致的 **Embedding** 调用（见 `.env.example`）。
+3. 需要为历史数据建索引时，可使用仓库内脚本（若存在）如 `backend/scripts/reindex_milvus.py` 按需执行。
+
+未启用 Milvus 时，检索会自动使用 **SQL 侧记忆列表**作为回退，不影响主流程演示。
+
+---
+
+## 常见问题
+
+- **前端能开但接口报错**：确认后端已启动且端口为 **8000**，或与 `frontend/app.js` 里 `API_BASE` 一致。
+- **RAG 不生效**：检查 `RAG_ENABLED`、Milvus 进程与嵌入 API；响应中的 `rag_debug.mode` 可帮助判断当前是 `milvus` 还是回退。
+- **数据库文件位置**：默认 **`HealthRecordAgent/data/health_memory.db`**，可通过环境变量 `HEALTH_MEMORY_DB_PATH` 覆盖。
+
+---
+
+## 相关链接
+
+- [Hello-Agents 教程与社区](https://github.com/datawhalechina/hello-agents)
+- 作者：[@Shawnxyxy](https://github.com/Shawnxyxy)
+
+## 致谢
+
+感谢 **DataWhale** 与 **Hello-Agents** 项目提供的教程与 `hello-agents` 依赖生态。
+
+---
+
+## 贡献与许可
+
+欢迎 Issue / PR。使用本项目时请遵守仓库根目录及上游社区的许可约定；若作为学习案例引用，建议注明出处。

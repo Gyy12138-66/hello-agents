@@ -33,8 +33,17 @@ class AgentConfig:
 # ========== RAG ==========
 @dataclass
 class RAGConfig:
-    enabled: bool = False
-    top_k: int = 5
+    enabled: bool = field(
+        default_factory=lambda: os.getenv("RAG_ENABLED", "false").lower() in ("1", "true", "yes")
+    )
+    top_k: int = field(default_factory=lambda: int(os.getenv("RAG_TOP_K", "5")))
+    milvus_uri: str = field(default_factory=lambda: os.getenv("MILVUS_URI", "http://127.0.0.1:19530"))
+    milvus_token: Optional[str] = field(default_factory=lambda: os.getenv("MILVUS_TOKEN"))
+    milvus_collection: str = field(default_factory=lambda: os.getenv("MILVUS_COLLECTION", "health_memory_chunks"))
+    embedding_model: str = field(default_factory=lambda: os.getenv("EMBEDDING_MODEL", "text-embedding-v1"))
+    embedding_api_key: Optional[str] = field(default_factory=lambda: os.getenv("EMBEDDING_API_KEY"))
+    embedding_base_url: Optional[str] = field(default_factory=lambda: os.getenv("EMBEDDING_BASE_URL"))
+    fallback_embedding_dim: int = field(default_factory=lambda: int(os.getenv("RAG_FALLBACK_EMBED_DIM", "64")))
 # ========== App ==========
 @dataclass
 class AppConfig:

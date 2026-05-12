@@ -612,7 +612,7 @@ class Agent(ABC):
 
 ### 7.4.1 SimpleAgent
 
-SimpleAgent是最基础的Agent实现，它展示了如何在框架基础上构建一个完整的对话智能体。我们将通过继承框架基类来重写SimpleAgent。首先，在你的项目目录中创建一个`my_simple_agent.py`文件：
+SimpleAgent是最基础的Agent实现，它展示了如何在框架基础上构建一个完整的对话智能体。我们将通过继承框架中已有的`SimpleAgent`类并重写其核心方法，来实现一个可扩展的版本。首先，在你的项目目录中创建一个`my_simple_agent.py`文件：
 
 ```python
 # my_simple_agent.py
@@ -640,7 +640,7 @@ class MySimpleAgent(SimpleAgent):
         print(f"✅ {name} 初始化完成，工具调用: {'启用' if self.enable_tool_calling else '禁用'}")
 ```
 
-接下来，我们需要重写Agent基类的抽象方法`run`。SimpleAgent支持可选的工具调用功能，也方便后续章节的扩展：
+接下来，我们需要重写`run`方法。SimpleAgent支持可选的工具调用功能，也方便后续章节的扩展：
 
 ```python
 # 继续在 my_simple_agent.py 中添加

@@ -18,9 +18,10 @@ from enum import Enum
 # 全局任务状态管理
 TASKS = {}
 
-def create_task(task_id: str):
+def create_task(task_id: str, user_id: str | None = None):
     TASKS[task_id] = {
         "task_id": task_id,
+        "user_id": user_id,
         "state": "running",
         "agents": {
             "PlannerAgent": "pending",

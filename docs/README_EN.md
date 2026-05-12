@@ -82,12 +82,13 @@
 | [07-Environment Configuration](https://github.com/datawhalechina/hello-agents/blob/main/Extra-Chapter/Extra07-环境配置.md)            | Environment Configuration |
 | [08-How to Write Good Skills](https://github.com/datawhalechina/hello-agents/blob/main/Extra-Chapter/Extra08-如何写出好的Skill.md) | Skill writing best practices |
 | [09-Agent Development Pitfalls and Practical Lessons](https://github.com/datawhalechina/hello-agents/blob/main/Extra-Chapter/Extra09-Agent应用开发实践踩坑与经验分享.md) | Practical lessons and pitfalls from building a Code Agent |
+| [10-Agent Self-Evolution](https://github.com/datawhalechina/hello-agents/blob/main/Extra-Chapter/Extra10-Agent自进化.md) | Four closed loops of agent self-evolution and representative projects |
 
 ### PDF Version Download
 
 &emsp;&emsp; *<strong>This Hello-Agents PDF tutorial is completely open source and free. To prevent various marketing accounts from adding watermarks and selling it to multi-agent system beginners, we have pre-added Datawhale open-source logo watermarks that do not affect reading in the PDF file. Please understand~</strong>*
 
-> *Hello-Agents PDF: https://github.com/datawhalechina/hello-agents/releases/tag/V1.0.0*  
+> *Hello-Agents PDF: https://github.com/datawhalechina/hello-agents/releases/latest/*  
 > *Hello-Agents PDF domestic download address: https://www.datawhale.cn/learn/summary/239* 
 
 ## 💡 How to Learn
@@ -124,7 +125,7 @@ We are an open-source community and welcome any form of contribution!
 ## 🙏 Acknowledgments
 
 ### Core Contributors
-- [Chen Sizhou - Project Leader](https://github.com/jjyaoao) (Datawhale member, full text writing and proofreading)
+- [Chen Sizhou - Project Leader](https://github.com/jjyaoao) (Datawhale member, full text writing and proofreading) <a href="https://www.xiaohongshu.com/user/profile/67b9cc34000000000e013517" target="_blank"><img alt="Static Badge" src="https://img.shields.io/badge/Rednote-小红书-e93c49"></a>
 - [Sun Tao - Co-sponsor](https://github.com/fengju0213) (Datawhale member, CAMEL-AI, Chapter 9 content and proofreading)
 - [Jiang Shufan - Co-sponsor](https://github.com/Tsumugii24) (Datawhale member, chapter exercise design and proofreading)
 - [Huang Peilin - Datawhale Prospective Member](https://github.com/HeteroCat) (Agent Development Engineer, Chapter 5 content contributor)
@@ -138,6 +139,7 @@ We are an open-source community and welcome any form of contribution!
 - [Huang Honghan - DW Contributor Team](https://github.com/XiaoMa-PM) (Shenzhen University, Extra04 Content Contributor)
 - [Wang Dapeng - Datawhale Member](https://github.com/ditingdapeng) (Senior Developer, Extra08 Content Contributor)
 - [You Yihui - Individual Developer](https://github.com/YYHDBL) (Nanjing University of Information Science and Technology, Extra09 content contribution)
+- [Yin Xin - Individual Developer](https://github.com/vinci-grape) (Zhejiang University, Extra10 content contribution)
 
 ### Special Thanks
 - Thanks to [@Sm1les](https://github.com/Sm1les) for help and support for this project
@@ -152,7 +154,7 @@ We are an open-source community and welcome any form of contribution!
 ## Star History
 
 <div align='center'>
-    <img src="./images/star-history-2026324.png" alt="Datawhale" width="90%">
+    <img src="./images/star-history-2026424.png" alt="Datawhale" width="90%">
 </div>
 
 <div align="center">
@@ -172,6 +174,20 @@ We are an open-source community and welcome any form of contribution!
     <img src="./images/datawhale.png" alt="Datawhale" width="30%">
     <p>Scan the QR code to follow the Datawhale official account and get more quality open-source content</p>
 </div>
+
+## 🎓 Citation
+
+If Hello-Agents is helpful to your research or work, please cite:
+
+```bibtex
+@misc{hello_agents2025,
+  title  = {Hello-Agents: Building an AI Agent from Scratch},
+  author = {Sizhou Chen and Tao Sun and Shufan Jiang and Peilin Huang and Xinmin Zeng and Xinzhong Zhu and all Hello-Agents contributors},
+  year   = {2025},
+  url    = {https://github.com/datawhalechina/Hello-Agents},
+  note   = {GitHub repository}
+}
+```
 
 ---
 

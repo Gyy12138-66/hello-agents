@@ -612,7 +612,7 @@ The content of this section will perform framework refactoring based on the thre
 
 ### 7.4.1 SimpleAgent
 
-SimpleAgent is the most basic Agent implementation, demonstrating how to build a complete conversational agent on the framework foundation. We will rewrite SimpleAgent by inheriting the framework base class. First, create a `my_simple_agent.py` file in your project directory:
+SimpleAgent is the most basic Agent implementation, demonstrating how to build a complete conversational agent on the framework foundation. We will extend the existing `SimpleAgent` class and override its core methods to build a more extensible version. First, create a `my_simple_agent.py` file in your project directory:
 
 ```python
 # my_simple_agent.py
@@ -622,7 +622,7 @@ from hello_agents import SimpleAgent, HelloAgentsLLM, Config, Message
 class MySimpleAgent(SimpleAgent):
     """
     Rewritten simple conversation Agent
-    Demonstrates how to build custom Agent based on framework base class
+    Demonstrates how to build a custom Agent by extending SimpleAgent
     """
 
     def __init__(
@@ -640,7 +640,7 @@ class MySimpleAgent(SimpleAgent):
         print(f"✅ {name} initialization complete, tool calling: {'enabled' if self.enable_tool_calling else 'disabled'}")
 ```
 
-Next, we need to override the abstract method `run` of the Agent base class. SimpleAgent supports optional tool calling functionality, which also facilitates expansion in subsequent chapters:
+Next, we need to override the `run` method. SimpleAgent supports optional tool calling functionality, which also facilitates expansion in subsequent chapters:
 
 ```python
 # Continue adding in my_simple_agent.py

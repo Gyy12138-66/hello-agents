@@ -18,12 +18,20 @@ class AdviceAgent(BaseAgent):
         risk_factors = input_data.get("risk_factors", [])
         potential_conditions = input_data.get("potential_conditions", [])
         confidence = input_data.get("confidence", 0.0)
+        if isinstance(input_data.get("risk_assessment"), dict):
+            ra = input_data["risk_assessment"]
+            overall_risk_level = ra.get("overall_risk_level", overall_risk_level)
+            risk_factors = ra.get("risk_factors", risk_factors)
+            potential_conditions = ra.get("potential_conditions", potential_conditions)
+            confidence = ra.get("confidence", confidence)
+        retrieved_memory = str(input_data.get("retrieved_memory") or "（暂无召回记忆）")
 
         prompt = self._build_prompt(
             overall_risk_level,
             risk_factors,
             potential_conditions,
-            confidence
+            confidence,
+            retrieved_memory,
         )
 
         response = await self.think(prompt)
@@ -37,13 +45,15 @@ class AdviceAgent(BaseAgent):
             }
 
         self.set_state("completed")
+        return result
 
     def _build_prompt(
         self,
         overall_risk_level: str,
         risk_factors: List[str],
         potential_conditions: List[str],
-        confidence: float
+        confidence: float,
+        retrieved_memory: str,
     ) -> str:
         return f"""
 你是一名专业的健康管理助手。
@@ -54,6 +64,9 @@ class AdviceAgent(BaseAgent):
 - 风险因素：{risk_factors}
 - 潜在健康问题：{potential_conditions}
 - 评估置信度：{confidence}
+
+历史记忆召回（RAG）：
+{retrieved_memory}
 
 请遵循以下原则：
 - 不进行医学诊断

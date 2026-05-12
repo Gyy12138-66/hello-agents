@@ -86,12 +86,13 @@
 | [07-环境配置](https://github.com/datawhalechina/hello-agents/blob/main/Extra-Chapter/Extra07-环境配置.md)                | 环境配置 |
 | [08-如何写出好的Skill](https://github.com/datawhalechina/hello-agents/blob/main/Extra-Chapter/Extra08-如何写出好的Skill.md) | Skill 写作最佳实践 |
 | [09-Agent应用开发实践踩坑与经验分享](https://github.com/datawhalechina/hello-agents/blob/main/Extra-Chapter/Extra09-Agent应用开发实践踩坑与经验分享.md) | Code Agent 应用开发踩坑与经验总结 |
+| [10-Agent Self-Evolution智能体自进化](https://github.com/datawhalechina/hello-agents/blob/main/Extra-Chapter/Extra10-Agent自进化.md) | Agent 自进化四类闭环与代表项目 |
 
 ### PDF 版本下载
 
 &emsp;&emsp; *<strong>本 Hello-Agents PDF 教程完全开源免费。为防止各类营销号加水印后贩卖给多智能体系统初学者，我们特地在 PDF 文件中预先添加了不影响阅读的 Datawhale 开源标志水印，敬请谅解～</strong>*
 
-> *Hello-Agents PDF : https://github.com/datawhalechina/hello-agents/releases/tag/V1.0.0*  
+> *Hello-Agents PDF : https://github.com/datawhalechina/hello-agents/releases/latest/*  
 > *Hello-Agents PDF 国内下载地址 : https://www.datawhale.cn/learn/summary/239* 
 
 ## 💡 如何学习
@@ -129,7 +130,7 @@
 ## 🙏 致谢
 
 ### 核心贡献者
-- [陈思州-项目负责人](https://github.com/jjyaoao) (Datawhale 成员, 全文写作和校对)
+- [陈思州-项目负责人](https://github.com/jjyaoao) (Datawhale 成员, 全文写作和校对) <a href="https://www.xiaohongshu.com/user/profile/67b9cc34000000000e013517" target="_blank"><img alt="Static Badge" src="https://img.shields.io/badge/Rednote-小红书-e93c49"></a>
 - [孙韬-联合发起者](https://github.com/fengju0213) (Datawhale 成员、CAMEL-AI, 第九章内容和校对)
 - [姜舒凡-联合发起者](https://github.com/Tsumugii24)（Datawhale 成员, 章节习题设计和校对）
 - [黄佩林-Datawhale意向成员](https://github.com/HeteroCat) (Agent 开发工程师, 第五章内容贡献者)
@@ -143,6 +144,7 @@
 - [黄宏晗-DW贡献者团队](https://github.com/XiaoMa-PM) (深圳大学, Extra04 内容贡献)
 - [王大鹏-Datawhale成员](https://github.com/ditingdapeng) (高级研发工程师, Extra08 内容贡献)
 - [尤逸晖-个人开发者](https://github.com/YYHDBL) (南京信息工程大学, Extra09 内容贡献)
+- [殷鑫-个人开发者](https://github.com/vinci-grape) (浙江大学, Extra10 内容贡献)
 
 ### 特别感谢
 - 感谢 [@Sm1les](https://github.com/Sm1les) 对本项目的帮助与支持
@@ -157,7 +159,7 @@
 ## Star History
 
 <div align='center'>
-    <img src="./images/star-history-2026324.png" alt="Datawhale" width="90%">
+    <img src="./images/star-history-2026424.png" alt="Datawhale" width="90%">
 </div>
 
 <div align="center">
@@ -177,6 +179,20 @@
     <img src="./images/datawhale.png" alt="Datawhale" width="30%">
     <p>扫描二维码关注 Datawhale 公众号，获取更多优质开源内容</p>
 </div>
+
+## 🎓 引用
+
+如果 Hello-Agents 对您的研究或工作有所帮助，欢迎引用：
+
+```bibtex
+@misc{hello_agents2025,
+  title  = {Hello-Agents: Building an AI Agent from Scratch},
+  author = {Sizhou Chen and Tao Sun and Shufan Jiang and Peilin Huang and Xinmin Zeng and Xinzhong Zhu and all Hello-Agents contributors},
+  year   = {2025},
+  url    = {https://github.com/datawhalechina/Hello-Agents},
+  note   = {GitHub repository}
+}
+```
 
 ---
 
